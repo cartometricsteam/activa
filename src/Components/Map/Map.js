@@ -528,6 +528,7 @@ const Map = props => {
             {(legend && mode !== 'events') ? <Legend toggleLegend={toggleLegend} /> : null}
             <div style={style.tabsContainer}>
                 <div className="tabs is-centered is-toggle is-small" style={style.tabs}>
+                    <div style={{ backgroundColor: 'red', zIndex: 100 }}>Testing</div>
                     <ul>
                         <li className={`has-text-weight-bold ${'activities' === mode ? 'is-active' : 'has-background'}`} style={style.tabsComponent} onClick={() => changeMode('activities')}><a >{t('activities')}</a></li>
                         <li title={t('eventsDescription')} className={`has-text-weight-bold ${'events' === mode ? 'is-active' : 'has-background'}`} style={style.tabsComponent} onClick={() => changeMode('events')}>
