@@ -120,21 +120,26 @@ const App = props => {
         store.dispatch(setNewData())
       })
 
-      firebase.firestore().collection('events').onSnapshot(async querySnapshot => {
-        const snapshot = querySnapshot
+      const date = new Date();
+      date.setDate(date.getDate() - 14);
+      const twoWeeksAgo = date.toISOString();
 
-        const features = snapshot.docs.map(doc => {
-          let data = doc.data()
-          return assocPath(['properties', 'id'], doc.id, data)
+      firebase.firestore().collection('events')
+        .where('properties.date', '>', twoWeeksAgo)
+        .onSnapshot(async querySnapshot => {
+          const snapshot = querySnapshot
+
+          const features = snapshot.docs.map(doc => {
+            let data = doc.data()
+            return assocPath(['properties', 'id'], doc.id, data)
+          })
+
+          const collection = turf.featureCollection(features)
+
+          store.dispatch(setEvents(collection))
+          store.dispatch(setFetching(false))
+          store.dispatch(setNewData())
         })
-
-        const collection = turf.featureCollection(features)
-
-        store.dispatch(setEvents(collection))
-        store.dispatch(setFetching(false))
-        store.dispatch(setNewData())
-
-      })
 
     }
     fetch()
